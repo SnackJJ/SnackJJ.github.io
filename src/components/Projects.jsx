@@ -18,14 +18,14 @@ export default function Projects() {
 
       {/* Other noteworthy projects */}
       <Reveal className="mt-28">
-        <h3 className="text-center text-2xl font-semibold text-slate-lightest sm:text-3xl">
+        <h3 className="text-center text-2xl font-semibold text-ink sm:text-3xl">
           Other Noteworthy Projects
         </h3>
         <a
           href="https://github.com/SnackJJ?tab=repositories"
           target="_blank"
           rel="noreferrer"
-          className="mt-2 block text-center font-mono text-[13px] text-green hover:underline"
+          className="mt-2 block text-center font-mono text-[13px] text-accent hover:underline"
         >
           view the full archive on GitHub
         </a>
@@ -35,17 +35,17 @@ export default function Projects() {
         {otherProjects.map((project, i) => (
           <li key={project.title}>
             <Reveal delay={(i % 3) * 120} className="h-full">
-              <article className="group flex h-full flex-col rounded-lg border border-transparent bg-navy-light p-7 shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-2 hover:border-green/40">
+              <article className="group flex h-full flex-col rounded-lg border border-transparent bg-surface p-7 shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-2 hover:border-accent/40">
                 <header className="flex items-center justify-between">
-                  <FolderIcon size={38} className="text-green" strokeWidth={1} />
-                  <div className="flex items-center gap-3 text-slate-light">
+                  <FolderIcon size={38} className="text-accent" strokeWidth={1} />
+                  <div className="flex items-center gap-3 text-body">
                     {project.links.github && (
                       <a
                         href={project.links.github}
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${project.title} on GitHub`}
-                        className="transition-colors hover:text-green"
+                        className="transition-colors hover:text-accent"
                       >
                         <GitHubIcon size={20} />
                       </a>
@@ -56,7 +56,7 @@ export default function Projects() {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${project.title} live demo`}
-                        className="transition-colors hover:text-green"
+                        className="transition-colors hover:text-accent"
                       >
                         <ExternalLinkIcon size={20} />
                       </a>
@@ -64,7 +64,7 @@ export default function Projects() {
                   </div>
                 </header>
 
-                <h4 className="mt-6 text-xl font-semibold text-slate-lightest transition-colors group-hover:text-green">
+                <h4 className="mt-6 text-xl font-semibold text-ink transition-colors group-hover:text-accent">
                   {project.links.github ? (
                     <a href={project.links.github} target="_blank" rel="noreferrer">
                       {project.title}
@@ -76,7 +76,7 @@ export default function Projects() {
 
                 <p className="mt-3 text-sm leading-relaxed">{project.description}</p>
 
-                <footer className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-6 font-mono text-xs text-slate">
+                <footer className="mt-auto flex flex-wrap gap-x-4 gap-y-1 pt-6 font-mono text-xs text-faint">
                   {project.tech.map((item) => (
                     <span key={item}>{item}</span>
                   ))}
@@ -96,13 +96,14 @@ function FeaturedProject({ project, reverse }) {
 
   const art = (
     <div
-      className={`overflow-hidden rounded-lg shadow-[var(--shadow-card)] ${
+      className={`overflow-hidden rounded-lg border border-line bg-surface shadow-[var(--shadow-card)] ${
         reverse ? "md:col-span-7 md:-ml-20" : "md:col-span-7"
       }`}
     >
-      <div className="group relative">
-        <ProjectArt id={project.id} />
-        <div className="absolute inset-0 bg-green/15 transition-opacity duration-500 group-hover:opacity-0" />
+      <div className="group">
+        <div className="transition-transform duration-500 ease-out group-hover:scale-[1.03]">
+          <ProjectArt id={project.id} />
+        </div>
       </div>
     </div>
   );
@@ -113,16 +114,16 @@ function FeaturedProject({ project, reverse }) {
         reverse ? "" : "md:col-start-8"
       } md:-ml-20`}
     >
-      <div className={`rounded-lg bg-navy-light/95 p-7 shadow-[var(--shadow-card)] ${alignment}`}>
-        <p className="font-mono text-sm text-green">{project.eyebrow}</p>
+      <div className={`rounded-lg bg-surface/95 p-7 shadow-[var(--shadow-card)] ${alignment}`}>
+        <p className="font-mono text-sm text-accent">{project.eyebrow}</p>
 
-        <h3 className="mt-2 text-2xl font-semibold text-slate-lightest">
+        <h3 className="mt-2 text-2xl font-semibold text-ink">
           {project.links.github ? (
             <a
               href={project.links.github}
               target="_blank"
               rel="noreferrer"
-              className="transition-colors hover:text-green"
+              className="transition-colors hover:text-accent"
             >
               {project.title}
             </a>
@@ -134,14 +135,14 @@ function FeaturedProject({ project, reverse }) {
         <p className="mt-4 text-sm leading-relaxed">{project.description}</p>
 
         {project.stats && (
-          <ul className={`mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-green/90 ${listAlignment}`}>
+          <ul className={`mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-accent/90 ${listAlignment}`}>
             {project.stats.map((stat) => (
               <li key={stat}>{stat}</li>
             ))}
           </ul>
         )}
 
-        <ul className={`mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs text-slate-light ${listAlignment}`}>
+        <ul className={`mt-4 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs text-body ${listAlignment}`}>
           {project.tech.map((item) => (
             <li key={item}>{item}</li>
           ))}
@@ -155,7 +156,7 @@ function FeaturedProject({ project, reverse }) {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`${project.title} live demo`}
-                className="text-slate-light transition-colors hover:text-green"
+                className="text-body transition-colors hover:text-accent"
               >
                 <ExternalLinkIcon size={22} />
               </a>
@@ -166,7 +167,7 @@ function FeaturedProject({ project, reverse }) {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`${project.title} on GitHub`}
-                className="text-slate-light transition-colors hover:text-green"
+                className="text-body transition-colors hover:text-accent"
               >
                 <GitHubIcon size={22} />
               </a>

@@ -1,17 +1,19 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Design tokens — palette follows brittanychiang.com
+   Design tokens — light variant of the Brittany Chiang-style system.
+   Deep navy ink + slate-blue copy on a cool off-white canvas,
+   with a teal accent that stays readable on light backgrounds.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-navy: #0a192f;
-  --color-navy-light: #112240;
-  --color-navy-lightest: #233554;
-  --color-slate: #8892b0;
-  --color-slate-light: #a8b2d1;
-  --color-slate-lightest: #ccd6f6;
-  --color-frost: #e6f1ff;
-  --color-green: #64ffda;
+  --color-canvas: #f3f7fc; /* page background */
+  --color-surface: #ffffff; /* cards, nav panel */
+  --color-line: #dbe3ee; /* hairlines & borders */
+  --color-ink: #14243f; /* headings */
+  --color-body: #45577a; /* body copy */
+  --color-faint: #66779a; /* muted meta text */
+  --color-accent: #0f766e; /* interactive teal (AA on white) */
+  --color-accent-bright: #14b8a6; /* decorative teal fills/strokes */
 
   --font-sans:
     "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system,
@@ -20,8 +22,8 @@
     ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
 
-  --shadow-card: 0 20px 30px -15px rgba(2, 12, 27, 0.7);
-  --shadow-green: 0 14px 28px -12px rgba(100, 255, 218, 0.28);
+  --shadow-card: 0 18px 32px -16px rgb(20 36 63 / 0.16);
+  --shadow-accent: 0 14px 26px -14px rgb(15 118 110 / 0.45);
 
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-scroll-hint: scroll-hint 1.8s ease-in-out infinite;
@@ -69,18 +71,18 @@
   }
 
   body {
-    @apply bg-navy font-sans text-slate antialiased;
+    @apply bg-canvas font-sans text-body antialiased;
     font-feature-settings: "cv11", "ss01";
     line-height: 1.6;
   }
 
   ::selection {
-    background-color: rgb(100 255 218 / 0.22);
-    color: var(--color-frost);
+    background-color: rgb(20 184 166 / 0.25);
+    color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 2px dashed var(--color-green);
+    outline: 2px dashed var(--color-accent);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -88,7 +90,7 @@
   /* Slim, unobtrusive scrollbar */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-navy-lightest) var(--color-navy);
+    scrollbar-color: var(--color-line) var(--color-canvas);
   }
 
   @media (prefers-reduced-motion: reduce) {

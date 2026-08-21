@@ -10,8 +10,8 @@ export default function Experience() {
   const tabClasses = (isActive) =>
     `relative w-full border-l-2 bg-transparent px-5 py-3 text-left font-mono text-[13px] transition-all duration-300 sm:border-b-2 sm:border-l-0 ${
       isActive
-        ? "border-green bg-green/5 text-green"
-        : "border-navy-lightest text-slate hover:bg-green/5 hover:text-green"
+        ? "border-accent bg-accent/5 text-accent"
+        : "border-line text-faint hover:bg-accent/5 hover:text-accent"
     }`;
 
   return (
@@ -29,7 +29,7 @@ export default function Experience() {
               id="experience-select"
               value={activeIndex}
               onChange={(event) => setActiveIndex(Number(event.target.value))}
-              className="w-full appearance-none rounded border border-navy-lightest bg-navy-light p-3 pr-10 font-mono text-sm text-slate-lightest focus:border-green focus:outline-none"
+              className="w-full appearance-none rounded border border-line bg-surface p-3 pr-10 font-mono text-sm text-ink focus:border-accent focus:outline-none"
             >
               {experience.map((job, i) => (
                 <option key={job.company} value={i}>
@@ -38,7 +38,7 @@ export default function Experience() {
               ))}
             </select>
             <span
-              className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-green"
+              className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-accent"
               aria-hidden="true"
             >
               ▾
@@ -78,11 +78,11 @@ export default function Experience() {
 function ExperienceDetails({ job }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold text-slate-lightest">
+      <h3 className="text-lg font-semibold text-ink">
         {job.role}{" "}
-        <span className="text-green">@ {job.company}</span>
+        <span className="text-accent">@ {job.company}</span>
       </h3>
-      <p className="mt-1 font-mono text-xs text-slate">
+      <p className="mt-1 font-mono text-xs text-faint">
         {job.range} · {job.location}
       </p>
 
@@ -91,7 +91,7 @@ function ExperienceDetails({ job }) {
       <ul className="mt-5 max-w-2xl space-y-3">
         {job.highlights.map((highlight) => (
           <li key={highlight.slice(0, 40)} className="flex items-start gap-3">
-            <span className="mt-1 shrink-0 text-green" aria-hidden="true">
+            <span className="mt-1 shrink-0 text-accent" aria-hidden="true">
               ▹
             </span>
             <span className="text-sm leading-relaxed">{highlight}</span>

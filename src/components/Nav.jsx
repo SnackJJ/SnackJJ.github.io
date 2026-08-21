@@ -50,14 +50,14 @@ export default function Nav() {
 
   const linkClasses = (id) =>
     `font-mono text-[13px] transition-colors duration-300 ${
-      activeSection === id ? "text-green" : "text-slate-lightest hover:text-green"
+      activeSection === id ? "text-accent" : "text-ink hover:text-accent"
     }`;
 
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
         scrolled || menuOpen
-          ? "bg-navy/85 shadow-[0_10px_30px_-10px_rgba(2,12,27,0.7)] backdrop-blur-md"
+          ? "bg-surface/85 shadow-[0_10px_30px_-14px_rgba(20,36,63,0.18)] backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -68,7 +68,7 @@ export default function Nav() {
         {/* Monogram */}
         <a
           href="#top"
-          className="font-mono text-lg font-semibold text-green transition-colors hover:text-green/80"
+          className="font-mono text-lg font-semibold text-accent transition-colors hover:text-accent/80"
           aria-label="Back to top"
         >
           &lt;{profile.monogram} /&gt;
@@ -78,7 +78,7 @@ export default function Nav() {
         <div className="hidden items-center gap-7 md:flex">
           {nav.map(({ id, label }, i) => (
             <a key={id} href={`#${id}`} className={linkClasses(id)}>
-              <span className="mr-1 text-green">0{i + 1}.</span>
+              <span className="mr-1 text-accent">0{i + 1}.</span>
               {label}
             </a>
           ))}
@@ -87,7 +87,7 @@ export default function Nav() {
         {/* Mobile hamburger */}
         <button
           type="button"
-          className="p-2 text-green md:hidden"
+          className="p-2 text-accent md:hidden"
           onClick={() => setMenuOpen(true)}
           aria-label="Open menu"
           aria-expanded={menuOpen}
@@ -101,14 +101,14 @@ export default function Nav() {
         <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true">
           <button
             type="button"
-            className="absolute inset-0 w-full cursor-default bg-navy/60 backdrop-blur-sm"
+            className="absolute inset-0 w-full cursor-default bg-ink/30 backdrop-blur-sm"
             onClick={() => setMenuOpen(false)}
             aria-label="Close menu"
           />
-          <div className="animate-panel-in absolute top-0 right-0 flex h-full w-3/4 min-w-[260px] flex-col bg-navy-light p-8 shadow-[var(--shadow-card)]">
+          <div className="animate-panel-in absolute top-0 right-0 flex h-full w-3/4 min-w-[260px] flex-col bg-surface p-8 shadow-[var(--shadow-card)]">
             <button
               type="button"
-              className="mb-10 self-end p-2 text-green"
+              className="mb-10 self-end p-2 text-accent"
               onClick={() => setMenuOpen(false)}
               aria-label="Close menu"
             >
@@ -121,23 +121,23 @@ export default function Nav() {
                   <a
                     href={`#${id}`}
                     onClick={() => setMenuOpen(false)}
-                    className="group flex items-baseline gap-2 font-mono text-base text-slate-lightest transition-colors hover:text-green"
+                    className="group flex items-baseline gap-2 font-mono text-base text-ink transition-colors hover:text-accent"
                   >
-                    <span className="text-sm text-green">0{i + 1}.</span>
+                    <span className="text-sm text-accent">0{i + 1}.</span>
                     {label}
                   </a>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-auto flex items-center gap-6 text-slate-light">
-              <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-green">
+            <div className="mt-auto flex items-center gap-6 text-body">
+              <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-accent">
                 <GitHubIcon size={22} />
               </a>
-              <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-green">
+              <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-accent">
                 <LinkedInIcon size={22} />
               </a>
-              <a href={`mailto:${profile.email}`} aria-label="Email" className="hover:text-green">
+              <a href={`mailto:${profile.email}`} aria-label="Email" className="hover:text-accent">
                 <MailIcon size={22} />
               </a>
             </div>

@@ -7,13 +7,13 @@ export default function SectionHeading({ index, title }) {
   return (
     <Reveal>
       <div className="flex items-center gap-3 sm:gap-4">
-        <h2 className="flex items-baseline whitespace-nowrap text-2xl font-semibold text-slate-lightest sm:text-3xl">
-          <span className="mr-2 font-mono text-base font-normal text-green sm:text-lg">
+        <h2 className="flex items-baseline whitespace-nowrap text-2xl font-semibold text-ink sm:text-3xl">
+          <span className="mr-2 font-mono text-base font-normal text-accent sm:text-lg">
             {index}.
           </span>
           {title}
         </h2>
-        <div className="mt-1 h-px flex-1 bg-navy-lightest" aria-hidden="true" />
+        <div className="mt-1 h-px flex-1 bg-line" aria-hidden="true" />
       </div>
     </Reveal>
   );

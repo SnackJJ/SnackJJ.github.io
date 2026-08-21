@@ -22,23 +22,23 @@ export default function SocialRails() {
             target={href.startsWith("http") ? "_blank" : undefined}
             rel="noreferrer"
             aria-label={label}
-            className="text-slate-light transition-all duration-300 hover:-translate-y-1 hover:text-green"
+            className="text-body transition-all duration-300 hover:-translate-y-1 hover:text-accent"
           >
             <Icon size={20} />
           </a>
         ))}
-        <div className="h-24 w-px bg-slate" aria-hidden="true" />
+        <div className="h-24 w-px bg-line" aria-hidden="true" />
       </div>
 
       <div className="fixed bottom-0 right-8 z-30 hidden flex-col items-center gap-6 xl:flex">
         <a
           href={`mailto:${profile.email}`}
-          className="font-mono text-[13px] tracking-widest text-slate-light transition-colors hover:text-green"
+          className="font-mono text-[13px] tracking-widest text-body transition-colors hover:text-accent"
           style={{ writingMode: "vertical-rl" }}
         >
           {profile.email}
         </a>
-        <div className="h-24 w-px bg-slate" aria-hidden="true" />
+        <div className="h-24 w-px bg-line" aria-hidden="true" />
       </div>
     </>
   );

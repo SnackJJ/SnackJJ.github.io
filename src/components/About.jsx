@@ -17,16 +17,16 @@ export default function About() {
         </div>
 
         <Reveal delay={150}>
-          <p className="mb-4 font-mono text-sm tracking-wide text-slate-lightest">
+          <p className="mb-4 font-mono text-sm tracking-wide text-ink">
             {about.skillsTitle}
           </p>
           <ul className="grid grid-cols-2 gap-x-4 gap-y-3 font-mono text-[13px] sm:grid-cols-3 md:grid-cols-2">
             {about.skills.map((skill) => (
               <li key={skill} className="flex items-start gap-2">
-                <span className="mt-px text-green" aria-hidden="true">
+                <span className="mt-px text-accent" aria-hidden="true">
                   ▹
                 </span>
-                <span className="text-slate-light">{skill}</span>
+                <span className="text-body">{skill}</span>
               </li>
             ))}
           </ul>
