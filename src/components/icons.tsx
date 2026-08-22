@@ -1,0 +1,162 @@
+import type { ReactNode } from "react";
+import type { PixelCell } from "../data/pixelArt";
+import { SCENES, svgCellsFromMap } from "../data/pixelArt";
+
+/**
+ * Icon set.
+ *
+ * Brand icons (GitHub / LinkedIn) use the official, universally recognized
+ * marks — pixel-art versions were tried and dropped for legibility.
+ * Utility icons (mail / external / folder / menu / close) use conventional
+ * 2px-stroke line glyphs. All inherit currentColor and share optical size.
+ */
+
+/* ---------------------------------------------------------------- */
+/* Brand marks (filled official paths)                               */
+/* ---------------------------------------------------------------- */
+
+function BrandIcon({
+  viewBox,
+  path,
+}: {
+  viewBox: string;
+  path: string;
+}) {
+  return (
+    <svg
+      viewBox={viewBox}
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d={path} />
+    </svg>
+  );
+}
+
+/** Octicons "mark-github" (MIT, © GitHub) */
+const GITHUB_PATH =
+  "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 " +
+  "0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13" +
+  "-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66." +
+  "07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-" +
+  ".08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 " +
+  "2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 " +
+  "2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 " +
+  "2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z";
+
+/** Simple Icons "LinkedIn" (CC0) */
+const LINKEDIN_PATH =
+  "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 " +
+  "1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-" +
+  "1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-" +
+  "2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11." +
+  "452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h" +
+  "20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z";
+
+export function GitHubIcon() {
+  return <BrandIcon viewBox="0 0 16 16" path={GITHUB_PATH} />;
+}
+
+export function LinkedInIcon() {
+  return <BrandIcon viewBox="0 0 24 24" path={LINKEDIN_PATH} />;
+}
+
+/* ---------------------------------------------------------------- */
+/* Utility line icons (conventional 2px-stroke glyphs, 24 grid)      */
+/* ---------------------------------------------------------------- */
+
+function StrokeIcon({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {children}
+    </svg>
+  );
+}
+
+export function MailIcon() {
+  return (
+    <StrokeIcon>
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </StrokeIcon>
+  );
+}
+
+export function ExternalLinkIcon() {
+  return (
+    <StrokeIcon>
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    </StrokeIcon>
+  );
+}
+
+export function FolderIcon() {
+  return (
+    <StrokeIcon>
+      <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+    </StrokeIcon>
+  );
+}
+
+export function MenuIcon() {
+  return (
+    <StrokeIcon>
+      <line x1="4" x2="20" y1="6" y2="6" />
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="18" y2="18" />
+    </StrokeIcon>
+  );
+}
+
+export function CloseIcon() {
+  return (
+    <StrokeIcon>
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </StrokeIcon>
+  );
+}
+
+/* ---------------------------------------------------------------- */
+/* Featured-project decorative pixel scene (kept — pure decoration)   */
+/* ---------------------------------------------------------------- */
+
+export function PixelScene({
+  scene,
+  label,
+}: {
+  scene: "harness" | "mind";
+  label: string;
+}) {
+  const cells: PixelCell[] = svgCellsFromMap(SCENES[scene]);
+  return (
+    <svg
+      viewBox="0 0 32 16"
+      className="h-full w-full"
+      preserveAspectRatio="xMidYMid meet"
+      shapeRendering="crispEdges"
+      role="img"
+      aria-label={label}
+    >
+      {cells.map((c, i) => (
+        <rect key={i} x={c.x} y={c.y} width={c.w} height={1} fill={c.fill} />
+      ))}
+    </svg>
+  );
+}

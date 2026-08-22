@@ -1,23 +1,29 @@
 {
-  "name": "zeqing-jiang-portfolio",
+  "name": "portfolio-site",
+  "version": "0.1.0",
   "private": true,
-  "version": "1.0.0",
+  "description": "Zeqing Jiang — single-page resume / portfolio (Flexoki paper-white + light pixel accents)",
   "type": "module",
-  "description": "Personal portfolio of Zeqing Jiang — ML & agent systems",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource/silkscreen": "^5.3.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@fontsource-variable/inter": "^5.2.5",
-    "@tailwindcss/vite": "^4.1.11",
-    "@vitejs/plugin-react": "^5.0.0",
-    "tailwindcss": "^4.1.11",
-    "vite": "^7.0.0"
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "playwright-core": "^1.62.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
   }
 }
