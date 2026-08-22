@@ -1,4 +1,4 @@
-/* Rasterize public/favicon.svg to 16/32/48 PNGs and pack a multi-size .ico.
+/* Rasterize public/icon-ze.svg to 16/32/48 PNGs and pack a multi-size .ico.
    Usage: node scripts/make-favicon-icons.mjs */
 import { chromium } from "playwright-core";
 import { readFileSync, writeFileSync, unlinkSync } from "node:fs";
@@ -7,7 +7,7 @@ import { homedir } from "node:os";
 const executablePath = `${homedir()}/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome`;
 const browser = await chromium.launch({ executablePath, args: ["--no-sandbox"] });
 
-const svgPath = new URL("../public/favicon.svg", import.meta.url).pathname;
+const svgPath = new URL("../public/icon-ze.svg", import.meta.url).pathname;
 const pngs = [];
 
 for (const size of [16, 32, 48]) {
@@ -50,10 +50,10 @@ header.writeUInt16LE(1, 2); // type: icon
 header.writeUInt16LE(pngs.length, 4);
 
 writeFileSync(
-  new URL("../public/favicon.ico", import.meta.url).pathname,
+  new URL("../public/icon-ze.ico", import.meta.url).pathname,
   Buffer.concat([header, ...entries, ...pngs.map((p) => p.data)]),
 );
 for (const { size } of pngs) {
   unlinkSync(new URL(`../favicon-${size}.png`, import.meta.url).pathname);
 }
-console.log("wrote public/favicon.ico with sizes", pngs.map((p) => p.size).join("/"));
+console.log("wrote public/icon-ze.ico with sizes", pngs.map((p) => p.size).join("/"));
