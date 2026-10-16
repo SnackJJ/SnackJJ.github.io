@@ -1,41 +1,36 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
-/**
- * Numbered section header: Silkscreen eyebrow ("01. About") + big sans title
- * + hairline. The Silkscreen eyebrow is one of the two sanctioned pixel-font
- * micro-copy spots on the whole page.
- */
+/** Numbered section header: mono number + serif title + optional lede. */
 export function SectionHeading({
-  eyebrow,
+  n,
+  label,
   title,
-  id,
+  children,
 }: {
-  eyebrow: string;
+  n: string;
+  label: string;
   title: string;
-  id?: string;
+  children?: ReactNode;
 }) {
   return (
     <Reveal>
-      <div className="mb-10 flex items-end gap-4 sm:mb-12">
-        <div>
-          <p className="font-pixel text-[11px] tracking-[0.3em] text-accent-deep uppercase">
-            {eyebrow}
-          </p>
-          <h2
-            id={id}
-            className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-3xl"
-          >
-            {title}
-          </h2>
-        </div>
-        <div aria-hidden="true" className="mb-2 h-px flex-1 bg-line" />
-      </div>
+      <header className="mb-12 max-w-3xl sm:mb-16">
+        <p className="kicker">
+          <span className="text-ink-3">{n}</span>
+          <span className="mx-2 text-line">/</span>
+          {label}
+        </p>
+        <h2 className="mt-3 font-serif text-4xl font-medium tracking-tight text-ink sm:text-5xl">
+          {title}
+        </h2>
+        {children && <p className="mt-5 text-lg leading-relaxed text-ink-2">{children}</p>}
+      </header>
     </Reveal>
   );
 }
 
-/** Convenience wrapper for a full page section with consistent rhythm. */
+/** Full-width page section with consistent rhythm and a top rule. */
 export function Section({
   id,
   children,
@@ -46,8 +41,8 @@ export function Section({
   className?: string;
 }) {
   return (
-    <section id={id} className={`mx-auto max-w-5xl px-6 py-24 sm:px-8 ${className}`}>
-      {children}
+    <section id={id} className={`border-t border-line ${className}`}>
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-8 sm:py-28">{children}</div>
     </section>
   );
 }

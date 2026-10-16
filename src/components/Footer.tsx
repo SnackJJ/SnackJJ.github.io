@@ -1,12 +1,10 @@
-import { footerNote } from "../data/resume";
-
-/** Footer: hairline + weak meta line (Ink-3, 14px — contrast-safe usage). */
+/** Footer: hairline + one meta line. */
 export function Footer() {
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-1 px-6 py-8 text-center sm:px-8">
-        <p className="font-mono text-sm text-ink-3">© 2026 Zeqing Jiang · 蒋泽庆</p>
-        <p className="font-mono text-sm text-ink-3">{footerNote}</p>
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-8 font-mono text-[13px] text-ink-3 sm:flex-row sm:px-8">
+        <p>© 2026 Zeqing Jiang · 蒋泽庆</p>
+        <p>Figures drawn by hand in SVG · palette: Flexoki</p>
       </div>
     </footer>
   );

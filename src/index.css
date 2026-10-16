@@ -1,42 +1,64 @@
 @import "@fontsource-variable/inter";
-@import "@fontsource/silkscreen/400.css";
-@import "@fontsource/silkscreen/700.css";
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
 @import "@fontsource-variable/jetbrains-mono";
 @import "tailwindcss";
 
 /* ============================================================================
-   Flexoki light palette — semantic design tokens
-   Palette: Flexoki by Steph Ango (https://stephango.com/flexoki)
-   Repo: https://github.com/kepano/flexoki
-   The ONLY hex values in the app live here (+ the pixel-sprite palette map in
-   src/data/pixelArt.ts). Everything else references these tokens.
+   Flexoki palette — semantic design tokens (https://stephango.com/flexoki)
+   Raw hex values live ONLY here. Components and figures use the semantic
+   names (bg-paper, fill-ink-2, stroke-line …), so dark mode is a token swap.
    ========================================================================== */
 @theme {
   --color-paper: #fffcf0; /* page background            */
-  --color-surface: #f2f0e5; /* cards, navbar              */
-  --color-surface-2: #e6e4d9; /* hover fill, code blocks    */
-  --color-line: #dad8ce; /* borders, hard pixel shadow */
+  --color-surface: #f2f0e5; /* cards, figure panels       */
+  --color-surface-2: #e6e4d9; /* hover fill, chips          */
+  --color-line: #dad8ce; /* borders, rules             */
   --color-ink: #100f0f; /* primary text               */
   --color-ink-2: #575653; /* secondary text             */
-  --color-ink-3: #878580; /* weak meta only, >=14px     */
-  --color-accent: #24837b; /* Cyan — icons, strokes      */
-  --color-accent-deep: #1c6c66; /* body-level links           */
+  --color-ink-3: #6f6e69; /* meta, >=13px only          */
+  --color-accent: #24837b; /* cyan — marks, strokes      */
+  --color-accent-soft: #a2dece; /* light cyan fills           */
+  --color-accent-deep: #1c6c66; /* links                      */
   --color-accent-deepest: #164f4a; /* link hover                 */
-  --color-highlight: #ad8301; /* Yellow — tiny accents only */
-  --color-highlight-soft: #f1d67e; /* text selection / highlighter sweep */
-  --color-danger: #af3029; /* form errors only           */
+  --color-highlight: #ad8301; /* yellow — tiny accents      */
+  --color-highlight-soft: #f1d67e; /* selection, marker sweep    */
+  --color-good: #66800b; /* status: pass               */
+  --color-warn: #bc5215; /* status: retry / weak       */
 
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     sans-serif;
-  --font-pixel: "Silkscreen", monospace;
+  --font-serif: "Newsreader Variable", ui-serif, Georgia, "Songti SC", serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo,
     Consolas, monospace;
+}
+
+/* Flexoki dark — its own steps, not an inversion. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #100f0f;
+    --color-surface: #1c1b1a;
+    --color-surface-2: #282726;
+    --color-line: #403e3c;
+    --color-ink: #cecdc3;
+    --color-ink-2: #a8a69d;
+    --color-ink-3: #878580;
+    --color-accent: #3aa99f;
+    --color-accent-soft: #164f4a;
+    --color-accent-deep: #5abdac;
+    --color-accent-deepest: #87d3c3;
+    --color-highlight: #d0a215;
+    --color-highlight-soft: #4d3a0b;
+    --color-good: #879a39;
+    --color-warn: #da702c;
+  }
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: light dark;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -60,86 +82,37 @@
   }
 
   section[id] {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: 4.5rem;
   }
 }
 
 @layer components {
-  /* ---- Pixel buttons: hard edges, 2px stroke, 4px hard offset shadow,
-         hover = press down-right, shadow collapses -------------------- */
-  .btn-pixel {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-[2px] px-5 py-3 text-sm font-semibold tracking-wide select-none;
-    box-shadow: 4px 4px 0 0 var(--color-line);
-    transition:
-      transform 0.13s ease-out,
-      box-shadow 0.13s ease-out,
-      border-color 0.15s ease-out,
-      color 0.15s ease-out,
-      background-color 0.15s ease-out;
+  /* ---- Buttons --------------------------------------------------------- */
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors;
   }
 
-  .btn-pixel:hover {
-    transform: translate(4px, 4px);
-    box-shadow: 0 0 0 0 var(--color-line);
-  }
-
-  .btn-pixel:active {
-    transform: translate(4px, 4px);
-  }
-
-  /* Usage: className="btn-pixel btn-primary" */
   .btn-primary {
-    @apply border-2 border-ink bg-ink text-paper;
+    @apply bg-ink text-paper hover:bg-accent-deepest;
   }
 
-  /* Usage: className="btn-pixel btn-secondary" */
-  .btn-secondary {
-    @apply border border-accent bg-transparent text-ink;
-
-    &:hover {
-      @apply border-accent-deep text-accent-deep;
-    }
+  .btn-ghost {
+    @apply border border-line text-ink hover:border-accent hover:text-accent-deep;
   }
 
-  /* ---- Cards: Surface + 1px Line border, hover lifts & cyan border --- */
-  .card {
-    @apply rounded-lg border border-line bg-surface;
-    transition:
-      transform 0.2s ease-out,
-      border-color 0.2s ease-out,
-      box-shadow 0.2s ease-out;
+  /* ---- Mono eyebrow / kicker ------------------------------------------ */
+  .kicker {
+    @apply font-mono text-[12px] font-medium tracking-[0.14em] text-accent-deep uppercase;
   }
 
-  .card-hover:hover {
-    transform: translateY(-3px);
-    @apply border-accent;
-    box-shadow: 4px 4px 0 0 var(--color-line);
-  }
-
-  /* ---- Tech chips: mono, cyan outline, hover Surface-2 + deeper border */
+  /* ---- Chips ----------------------------------------------------------- */
   .chip {
-    @apply inline-flex items-center rounded-[3px] border border-accent/70 px-2.5 py-1 font-mono text-xs text-ink;
-    transition:
-      background-color 0.15s ease-out,
-      border-color 0.15s ease-out;
+    @apply inline-flex items-center rounded-full border border-line px-2.5 py-0.5 font-mono text-[12px] text-ink-2;
   }
 
-  .chip:hover {
-    @apply border-accent-deep bg-surface-2;
-  }
-
-  /* chip variant used inside project cards (smaller) */
-  .chip-sm {
-    @apply px-2 py-0.5 text-[11px];
-  }
-
-  /* ---- Body links: AA-safe deep cyan, deepen + underline on hover ---- */
+  /* ---- Body links ------------------------------------------------------ */
   .link-inline {
-    @apply text-accent-deep underline-offset-4;
-
-    &:hover {
-      @apply text-accent-deepest underline;
-    }
+    @apply text-accent-deep underline decoration-accent/40 underline-offset-4 transition-colors hover:text-accent-deepest hover:decoration-accent;
   }
 
   /* ---- Highlighter sweep for the big email link ---------------------- */
@@ -149,36 +122,74 @@
       var(--color-highlight-soft)
     );
     background-repeat: no-repeat;
-    background-size: 0% 88%;
-    background-position: 0 60%;
+    background-size: 0% 40%;
+    background-position: 0 85%;
     transition: background-size 0.45s ease-in-out;
 
     &:hover {
-      background-size: 100% 88%;
+      background-size: 100% 40%;
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .highlighter {
-      transition: none;
-    }
-  }
-
-  /* ---- Ultra-faint pixel grid texture (Hero + Footer only) ----------- */
-  .pixel-grid::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: linear-gradient(
-        to right,
-        var(--color-line) 1px,
-        transparent 1px
-      ),
-      linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  /* ---- Dotted "graph paper" texture ----------------------------------- */
+  .dot-grid {
+    background-image: radial-gradient(
+      var(--color-line) 1px,
+      transparent 1.2px
+    );
     background-size: 22px 22px;
-    opacity: 0.04; /* spec: <= 4% */
+  }
+
+  /* ---- Figures: SVG diagrams share one type scale --------------------- */
+  .fig svg {
+    @apply block h-auto w-full overflow-visible;
+  }
+
+  .fig text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    fill: var(--color-ink-2);
+  }
+
+  .fig text.t-serif {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 500;
+    fill: var(--color-ink);
+  }
+
+  .fig text.t-strong {
+    font-weight: 600;
+    fill: var(--color-ink);
+  }
+
+  .fig text.t-small {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  .fig text.t-accent {
+    fill: var(--color-accent-deep);
+  }
+
+  .fig text.t-inverse {
+    fill: var(--color-paper);
+  }
+
+  .fig text.t-mute {
+    fill: var(--color-ink-3);
+  }
+
+  /* animated "data flowing" dashes on flow lines */
+  .flow {
+    stroke-dasharray: 4 5;
+    animation: flow 1.4s linear infinite;
+  }
+
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -18;
+    }
   }
 
   /* ---- Scroll-reveal (fade + rise <=16px) ---------------------------- */
@@ -186,8 +197,8 @@
     opacity: 0;
     transform: translateY(16px);
     transition:
-      opacity 0.55s ease-out,
-      transform 0.55s ease-out;
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
   }
 
   .reveal.is-visible {
@@ -199,6 +210,14 @@
     .reveal {
       opacity: 1;
       transform: none;
+      transition: none;
+    }
+
+    .flow {
+      animation: none;
+    }
+
+    .highlighter {
       transition: none;
     }
   }

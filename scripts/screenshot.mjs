@@ -29,6 +29,16 @@ await mobile.evaluate(() => {
 });
 await mobile.waitForTimeout(700);
 await mobile.screenshot({ path: "shots/mobile-top.png", fullPage: false });
+await mobile.screenshot({ path: "shots/mobile-full.png", fullPage: true });
+
+// Dark mode — full page
+const dark = await browser.newPage({ viewport: { width: 1280, height: 900 }, colorScheme: "dark" });
+await dark.goto("http://localhost:5173/", { waitUntil: "networkidle" });
+await dark.evaluate(() => {
+  document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
+});
+await dark.waitForTimeout(700);
+await dark.screenshot({ path: "shots/dark-full.png", fullPage: true });
 
 // Console errors check
 const errpage = await browser.newPage();

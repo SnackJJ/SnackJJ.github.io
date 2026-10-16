@@ -25,11 +25,11 @@ export function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 backdrop-blur transition-[background-color,box-shadow,border-color] duration-300 ${
         scrolled || open
-          ? "border-b border-line bg-paper/85 shadow-[0_1px_0_0_rgba(16,15,15,0.03)]"
+          ? "border-b border-line bg-paper/85 "
           : "border-b border-transparent bg-paper/70"
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6 sm:px-8">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-8">
         {/* Logo */}
         <a
           href="#top"
@@ -39,8 +39,10 @@ export function Navbar() {
         >
           <span
             aria-hidden="true"
-            className="inline-block h-2.5 w-2.5 rounded-[2px] bg-accent shadow-[3px_3px_0_0_var(--color-line)]"
-          />
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-ink font-serif text-[13px] font-semibold text-paper"
+          >
+            ZJ
+          </span>
           {profile.name}
         </a>
 
@@ -50,23 +52,12 @@ export function Navbar() {
             <li key={l.href}>
               <a
                 href={l.href}
-                className="flex min-h-[44px] items-center rounded-[3px] px-3 text-sm font-medium text-ink-2 transition-colors hover:bg-surface-2 hover:text-accent-deep"
+                className="flex min-h-[44px] items-center rounded-full px-3.5 text-sm font-medium text-ink-2 transition-colors hover:bg-surface-2 hover:text-accent-deep"
               >
                 {l.label}
               </a>
             </li>
           ))}
-          {profile.resumeUrl && (
-            <li className="ml-2">
-              {/* TODO: wire to a real resume PDF once published */}
-              <a
-                href={profile.resumeUrl}
-                className="btn-pixel btn-secondary min-h-[38px]! px-4! py-1.5!"
-              >
-                Resume
-              </a>
-            </li>
-          )}
         </ul>
 
         {/* Mobile hamburger (44px+ touch target) */}
@@ -88,7 +79,7 @@ export function Navbar() {
           id="mobile-menu"
           className="border-t border-line bg-paper md:hidden"
         >
-          <ul className="mx-auto max-w-5xl px-6 py-3">
+          <ul className="mx-auto max-w-6xl px-4 py-3">
             {navLinks.map((l) => (
               <li key={l.href}>
                 <a

@@ -1,6 +1,4 @@
 import type { ReactNode } from "react";
-import type { PixelCell } from "../data/pixelArt";
-import { SCENES, svgCellsFromMap } from "../data/pixelArt";
 
 /**
  * Icon set.
@@ -130,33 +128,5 @@ export function CloseIcon() {
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
     </StrokeIcon>
-  );
-}
-
-/* ---------------------------------------------------------------- */
-/* Featured-project decorative pixel scene (kept — pure decoration)   */
-/* ---------------------------------------------------------------- */
-
-export function PixelScene({
-  scene,
-  label,
-}: {
-  scene: "harness" | "mind";
-  label: string;
-}) {
-  const cells: PixelCell[] = svgCellsFromMap(SCENES[scene]);
-  return (
-    <svg
-      viewBox="0 0 32 16"
-      className="h-full w-full"
-      preserveAspectRatio="xMidYMid meet"
-      shapeRendering="crispEdges"
-      role="img"
-      aria-label={label}
-    >
-      {cells.map((c, i) => (
-        <rect key={i} x={c.x} y={c.y} width={c.w} height={1} fill={c.fill} />
-      ))}
-    </svg>
   );
 }
