@@ -1,6 +1,6 @@
 import { useId, useState, type ReactNode } from "react";
 import type { TurnStep } from "../data/resume";
-import { benchFamilies, benchRuns, passAt1, turnSteps, writeSteps } from "../data/resume";
+import { benchRuns, passAt1, turnSteps, writeSteps } from "../data/resume";
 
 /* ------------------------------------------------------------------ */
 /* Shared pieces                                                       */
@@ -194,16 +194,9 @@ export function ScoringFigure() {
   );
 }
 
-/** NutriEnv v1.1 published runs: total passes, then passes per task family. */
+/** NutriEnv v1.1 published runs: total passes, then pass rate vs. token cost. */
 export function BenchResults() {
-  const total = benchFamilies.reduce((s, f) => s + f.n, 0);
-  const cellStyle = (k: number, n: number) => {
-    const r = k / n;
-    return {
-      background: `color-mix(in oklab, var(--color-accent) ${Math.round(12 + r * 88)}%, var(--color-paper))`,
-      color: r >= 0.7 ? "var(--color-paper)" : "var(--color-ink)",
-    };
-  };
+  const total = 63;
   return (
     <div>
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
@@ -225,39 +218,106 @@ export function BenchResults() {
         ))}
       </ul>
 
-      <table className="mt-6 w-full table-fixed border-separate border-spacing-[3px] font-mono text-[12px]">
-        <caption className="sr-only">Passes per task family and model</caption>
-        <thead>
-          <tr>
-            <th className="w-[22%]" />
-            {benchFamilies.map((f) => (
-              <th key={f.family} scope="col" className="pb-1 text-center font-normal">
-                <span className="block truncate text-[11px] text-ink-2">{f.family}</span>
-                <span className="text-[11px] text-ink-3">{f.n} tasks</span>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {benchRuns.map((r) => (
-            <tr key={r.model}>
-              <th scope="row" className="truncate pr-1 text-left font-normal text-ink-2">
-                {r.model.split("-")[0]}
-              </th>
-              {r.byFamily.map((k, i) => (
-                <td
-                  key={benchFamilies[i].family}
-                  title={`${r.model} · ${benchFamilies[i].family}: ${k}/${benchFamilies[i].n}`}
-                  className="rounded-[4px] py-1.5 text-center"
-                  style={cellStyle(k, benchFamilies[i].n)}
-                >
-                  {k}/{benchFamilies[i].n}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="mt-6 border-t border-line pt-5">
+        <ParetoChart />
+      </div>
+    </div>
+  );
+}
+
+/** Pass rate against average tokens per task; upper-left is better. */
+function ParetoChart() {
+  const [hover, setHover] = useState<number | null>(null);
+  const x0 = 52;
+  const x1 = 424;
+  const y0 = 196; // 40%
+  const y1 = 22; // 100%
+  const sx = (k: number) => x0 + ((k - 60) / 40) * (x1 - x0);
+  const sy = (p: number) => y0 - ((p - 40) / 60) * (y0 - y1);
+  const onFrontier = benchRuns.map(
+    (r) => !benchRuns.some((o) => o !== r && o.tokensK <= r.tokensK && o.passPct >= r.passPct),
+  );
+  const frontier = benchRuns
+    .filter((_, i) => onFrontier[i])
+    .sort((a, b) => a.tokensK - b.tokensK)
+    .map((r) => `${sx(r.tokensK)},${sy(r.passPct)}`)
+    .join(" ");
+  // label placement per point, chosen so labels never overlap
+  const place = [
+    { dx: 12, dy: -4, anchor: "start" },
+    { dx: 12, dy: 20, anchor: "start" },
+    { dx: -14, dy: -18, anchor: "end" },
+  ] as const;
+  const readout =
+    hover === null
+      ? "Hover a point for exact values."
+      : `${benchRuns[hover].model}: ${benchRuns[hover].pass}/63 passed, ${benchRuns[hover].tokensK}k tokens per task`;
+
+  return (
+    <div>
+      <p className="mb-2 font-mono text-[12px] font-semibold text-ink">Pass rate vs. token cost</p>
+      <svg viewBox="0 0 440 232" role="img" aria-label="Scatter plot of pass rate against average tokens per task: GLM-5.3-flash 88.9% at 68.1k, DeepSeek-v4.1-flash 95.2% at 70.2k, Doubao-seed-2.1-lite 58.7% at 95.5k.">
+        {[40, 60, 80, 100].map((v) => (
+          <g key={v}>
+            <line x1={x0} x2={x1} y1={sy(v)} y2={sy(v)} className={v === 40 ? "stroke-ink-3" : "stroke-line"} strokeDasharray={v === 40 ? undefined : "2 4"} />
+            <text x={x0 - 8} y={sy(v) + 4} textAnchor="end" className="t-mute">
+              {v}
+            </text>
+          </g>
+        ))}
+        {[60, 70, 80, 90, 100].map((k) => (
+          <text key={k} x={sx(k)} y={y0 + 18} textAnchor="middle" className="t-mute">
+            {k}k
+          </text>
+        ))}
+        <text x={x0} y="10" className="t-mute">pass %</text>
+        <text x={x1} y={y0 + 34} textAnchor="end" className="t-mute">avg tokens per task →</text>
+        <text x={x1} y={y1 + 4} textAnchor="end" className="t-small t-accent">↖ better</text>
+
+        <polyline points={frontier} className="fill-none stroke-accent" strokeWidth="2" strokeDasharray="5 4" />
+
+        {benchRuns.map((r, i) => {
+          const cx = sx(r.tokensK);
+          const cy = sy(r.passPct);
+          const p = place[i];
+          const dim = hover !== null && hover !== i;
+          return (
+            <g
+              key={r.model}
+              onMouseEnter={() => setHover(i)}
+              onMouseLeave={() => setHover(null)}
+              opacity={dim ? 0.45 : 1}
+              className="cursor-default transition-opacity"
+            >
+              <circle cx={cx} cy={cy} r="16" fill="transparent" />
+              <circle
+                cx={cx}
+                cy={cy}
+                r="6"
+                strokeWidth="2"
+                className={onFrontier[i] ? "fill-accent stroke-surface" : "fill-surface stroke-ink-3"}
+              />
+              <text x={cx + p.dx} y={cy + p.dy} textAnchor={p.anchor} className="t-strong">
+                {r.model}
+              </text>
+              <text x={cx + p.dx} y={cy + p.dy + 15} textAnchor={p.anchor}>
+                {`${r.passPct}% · ${r.tokensK}k`}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+      <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 font-mono text-[12px] text-ink-3">
+        <span aria-live="polite">{readout}</span>
+        <span className="flex items-center gap-3">
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-accent" /> observed frontier
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full border-2 border-ink-3" /> dominated
+          </span>
+        </span>
+      </div>
     </div>
   );
 }

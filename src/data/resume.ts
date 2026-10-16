@@ -122,19 +122,12 @@ export const featured: FeaturedProject[] = [
 /**
  * NutriEnv v1.1 results as published in the NutriEnv README: internal ARK endpoint,
  * one run per model, T=0, native function calling. Not a leaderboard.
+ * Tokens are overall_avg_tokens_per_task from reports/ab_ark_<model>_v1.1-new_fc.json.
  */
-export const benchFamilies = [
-  { family: "Update", n: 2 },
-  { family: "Log", n: 6 },
-  { family: "Evaluate", n: 8 },
-  { family: "Recommend", n: 11 },
-  { family: "Composite", n: 36 },
-];
-
 export const benchRuns = [
-  { model: "DeepSeek-v4.1-flash", pass: 60, byFamily: [2, 4, 7, 11, 36] },
-  { model: "GLM-5.3-flash", pass: 56, byFamily: [2, 3, 6, 11, 34] },
-  { model: "Doubao-seed-2.1-lite", pass: 37, byFamily: [2, 3, 6, 6, 20] },
+  { model: "DeepSeek-v4.1-flash", pass: 60, passPct: 95.2, tokensK: 70.2 },
+  { model: "GLM-5.3-flash", pass: 56, passPct: 88.9, tokensK: 68.1 },
+  { model: "Doubao-seed-2.1-lite", pass: 37, passPct: 58.7, tokensK: 95.5 },
 ];
 
 export const benchResultsUrl = "https://github.com/SnackJJ/NutriEnv#v11-results";

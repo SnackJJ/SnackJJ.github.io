@@ -17,8 +17,9 @@ const figures: Record<FeaturedProject["id"], ReactNode> = {
           <a href={benchResultsUrl} target="_blank" rel="noreferrer" className="link-inline">
             NutriEnv README
           </a>
-          ; a single run per model does not establish a ranking. The gap opens on Recommend and Composite
-          tasks.
+          : passes, and pass rate against average tokens per task. GLM and DeepSeek form the
+          observed frontier; Doubao spends the most tokens for the lowest score. One run per model does not
+          establish a ranking.
         </>
       }
     >
