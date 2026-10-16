@@ -119,13 +119,44 @@ export const featured: FeaturedProject[] = [
   },
 ];
 
-/** NutriEnv exam composition (v1.1 split, 63 tasks). */
-export const examMix = [
-  { family: "Composite", n: 36 },
-  { family: "Recommend", n: 11 },
-  { family: "Evaluate", n: 8 },
-  { family: "Log", n: 6 },
+/**
+ * NutriEnv v1.1 results as published in the NutriEnv README: internal ARK endpoint,
+ * one run per model, T=0, native function calling. Not a leaderboard.
+ */
+export const benchFamilies = [
   { family: "Update", n: 2 },
+  { family: "Log", n: 6 },
+  { family: "Evaluate", n: 8 },
+  { family: "Recommend", n: 11 },
+  { family: "Composite", n: 36 },
+];
+
+export const benchRuns = [
+  { model: "DeepSeek-v4.1-flash", pass: 60, byFamily: [2, 4, 7, 11, 36] },
+  { model: "GLM-5.3-flash", pass: 56, byFamily: [2, 3, 6, 11, 34] },
+  { model: "Doubao-seed-2.1-lite", pass: 37, byFamily: [2, 3, 6, 6, 20] },
+];
+
+export const benchResultsUrl = "https://github.com/SnackJJ/NutriEnv#v11-results";
+
+/** One NutriBuddy turn: who acts at each step. */
+export type TurnStep = { kind: "io" | "model" | "gate" | "user"; label: string; detail?: string };
+
+export const turnSteps: TurnStep[] = [
+  { kind: "io", label: "User message" },
+  { kind: "gate", label: "Input gate", detail: "schema, allergy and conflict checks" },
+  { kind: "model", label: "Model picks a tool", detail: "ReAct loop, native function calling" },
+  { kind: "gate", label: "Tool gate", detail: "typed arguments; errors go back to the model" },
+  { kind: "model", label: "Model drafts the answer", detail: "typed final submission" },
+  { kind: "gate", label: "Output gate", detail: "numbers re-verified, citations checked" },
+  { kind: "io", label: "Answer with citations" },
+];
+
+export const writeSteps: TurnStep[] = [
+  { kind: "model", label: "Model proposes a write", detail: "stored as a proposal, nothing saved yet" },
+  { kind: "user", label: "User confirms" },
+  { kind: "gate", label: "Commit gate", detail: "ownership, state and expiry, in one transaction" },
+  { kind: "io", label: "Saved to Postgres" },
 ];
 
 /** NutriMind mean Pass@1, Qwen3.5-2B, 63 tasks × 8 runs. */

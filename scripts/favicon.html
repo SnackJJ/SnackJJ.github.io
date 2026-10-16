@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- Favicon source: rendered by scripts/make-favicon-icons.mjs. ?s=<px>&bleed=1 -->
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face {
+    font-family: "NR";
+    src: url("../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-opsz-italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 200 800;
+  }
+  html, body { margin: 0; background: transparent; }
+  .mark {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    width: var(--s); height: var(--s); background: #100f0f; border-radius: 22%; overflow: hidden;
+  }
+  .bleed .mark { border-radius: 0; }
+  .mark span {
+    font-family: "NR"; font-style: italic; font-weight: 560; color: #fffcf0;
+    font-size: calc(var(--s) * 0.64); line-height: 1; letter-spacing: -0.04em;
+    font-variation-settings: "opsz" 72; transform: translate(-4%, -5%);
+  }
+  .mark i {
+    position: absolute; border-radius: 50%; background: #3aa99f;
+    width: calc(var(--s) * 0.13); height: calc(var(--s) * 0.13); right: 25%; top: 19%;
+  }
+</style>
+</head>
+<body>
+<div class="mark"><span>z&#x0237;</span><i></i></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  document.documentElement.style.setProperty("--s", (q.get("s") || "180") + "px");
+  if (q.get("bleed")) document.body.classList.add("bleed");
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import { useId, useState, type ReactNode } from "react";
-import { examMix, passAt1 } from "../data/resume";
+import type { TurnStep } from "../data/resume";
+import { benchFamilies, benchRuns, passAt1, turnSteps, writeSteps } from "../data/resume";
 
 /* ------------------------------------------------------------------ */
 /* Shared pieces                                                       */
@@ -193,92 +194,144 @@ export function ScoringFigure() {
   );
 }
 
-/** Horizontal bars: how the 63 frozen tasks split by family. */
-export function ExamMix() {
-  const total = examMix.reduce((s, r) => s + r.n, 0);
-  const max = Math.max(...examMix.map((r) => r.n));
+/** NutriEnv v1.1 published runs: total passes, then passes per task family. */
+export function BenchResults() {
+  const total = benchFamilies.reduce((s, f) => s + f.n, 0);
+  const cellStyle = (k: number, n: number) => {
+    const r = k / n;
+    return {
+      background: `color-mix(in oklab, var(--color-accent) ${Math.round(12 + r * 88)}%, var(--color-paper))`,
+      color: r >= 0.7 ? "var(--color-paper)" : "var(--color-ink)",
+    };
+  };
   return (
     <div>
-      <p className="mb-3 font-mono text-[12px] text-ink-3">
-        Exam composition · {total} tasks
-      </p>
-      <ul className="space-y-1.5">
-        {examMix.map((r) => (
-          <li
-            key={r.family}
-            className="group grid grid-cols-[6.5rem_1fr_4.5rem] items-center gap-3 rounded-md px-1 py-1 transition-colors hover:bg-surface-2"
-          >
-            <span className="font-mono text-[13px] text-ink-2">{r.family}</span>
-            <span className="h-3.5">
-              <span
-                className="block h-full rounded-r bg-accent transition-opacity group-hover:opacity-80"
-                style={{ width: `${(r.n / max) * 100}%` }}
-              />
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <p className="font-mono text-[12px] font-semibold text-ink">Passes on the public v1.1 exam</p>
+        <p className="font-mono text-[11px] text-ink-3">1 run per model · T=0 · not a leaderboard</p>
+      </div>
+
+      <ul className="mt-4 space-y-2.5">
+        {benchRuns.map((r) => (
+          <li key={r.model} className="grid grid-cols-[minmax(0,9.5rem)_1fr_3.5rem] items-center gap-3">
+            <span className="truncate font-mono text-[12px] text-ink-2">{r.model}</span>
+            <span className="h-3 rounded-r bg-surface-2">
+              <span className="block h-full rounded-r bg-accent" style={{ width: `${(r.pass / total) * 100}%` }} />
             </span>
-            <span className="text-right font-mono text-[13px] text-ink">
-              {r.n}
-              <span className="ml-1.5 text-ink-3 opacity-0 transition-opacity group-hover:opacity-100">
-                {Math.round((r.n / total) * 100)}%
-              </span>
+            <span className="text-right font-mono text-[13px] font-semibold text-ink">
+              {r.pass}/{total}
             </span>
           </li>
         ))}
       </ul>
+
+      <table className="mt-6 w-full table-fixed border-separate border-spacing-[3px] font-mono text-[12px]">
+        <caption className="sr-only">Passes per task family and model</caption>
+        <thead>
+          <tr>
+            <th className="w-[22%]" />
+            {benchFamilies.map((f) => (
+              <th key={f.family} scope="col" className="pb-1 text-center font-normal">
+                <span className="block truncate text-[11px] text-ink-2">{f.family}</span>
+                <span className="text-[11px] text-ink-3">{f.n} tasks</span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {benchRuns.map((r) => (
+            <tr key={r.model}>
+              <th scope="row" className="truncate pr-1 text-left font-normal text-ink-2">
+                {r.model.split("-")[0]}
+              </th>
+              {r.byFamily.map((k, i) => (
+                <td
+                  key={benchFamilies[i].family}
+                  title={`${r.model} · ${benchFamilies[i].family}: ${k}/${benchFamilies[i].n}`}
+                  className="rounded-[4px] py-1.5 text-center"
+                  style={cellStyle(k, benchFamilies[i].n)}
+                >
+                  {k}/{benchFamilies[i].n}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* Fig. 2 — NutriBuddy gates                                           */
+/* Fig. 2 — one NutriBuddy turn                                        */
 /* ------------------------------------------------------------------ */
 
-export function GateFigure() {
-  const a = useId().replace(/:/g, "");
+function StepNode({ kind }: { kind: TurnStep["kind"] }) {
+  const mark =
+    kind === "model" ? (
+      <span className="h-3.5 w-3.5 rounded-full bg-ink" />
+    ) : kind === "gate" ? (
+      <span className="h-3 w-3 rotate-45 rounded-[2px] bg-accent ring-4 ring-accent-soft" />
+    ) : kind === "user" ? (
+      <span className="h-3.5 w-3.5 rounded-full bg-highlight" />
+    ) : (
+      <span className="h-3.5 w-3.5 rounded-full border-2 border-ink-3 bg-paper" />
+    );
+  return <span className="relative z-10 flex h-6 w-6 shrink-0 items-center justify-center">{mark}</span>;
+}
+
+function Rail({ steps }: { steps: TurnStep[] }) {
   return (
-    <svg viewBox="0 0 440 290" role="img" aria-labelledby={`${a}-t`}>
-      <title id={`${a}-t`}>
-        Diagram: a message passes the input gate into the ReAct loop, tool calls pass the tool gate, answers pass the output gate; writes become proposals that need user confirmation and the commit gate before reaching Postgres.
-      </title>
-      <defs>
-        <ArrowDef id={`${a}-ar`} />
-      </defs>
+    <ol>
+      {steps.map((s, i) => (
+        <li key={s.label} className="relative flex gap-3 pb-3.5 last:pb-0">
+          {i < steps.length - 1 && (
+            <span aria-hidden="true" className="absolute top-5 bottom-0 left-[11.5px] w-px bg-line" />
+          )}
+          <StepNode kind={s.kind} />
+          <div className="min-w-0 pt-[3px]">
+            <p className={`text-[14px] leading-tight font-medium ${s.kind === "gate" ? "text-accent-deep" : "text-ink"}`}>
+              {s.label}
+            </p>
+            {s.detail && <p className="mt-0.5 font-mono text-[12px] leading-snug text-ink-3">{s.detail}</p>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
 
-      {/* row A: message → input → loop */}
-      <Pill x={8} y={30} w={84} label="message" />
-      <line x1="92" y1="44" x2="108" y2="44" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
-      <Pill x={112} y={30} w={74} label="input" tone="gate" />
-      <line x1="186" y1="44" x2="200" y2="44" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
-
-      {/* ReAct loop */}
-      <rect x="204" y="8" width="228" height="152" rx="14" className="fill-paper stroke-line" />
-      <text x="220" y="30" className="t-small t-accent">REACT LOOP</text>
-      <rect x="220" y="42" width="78" height="44" rx="8" className="fill-ink" />
-      <text x="259" y="69" textAnchor="middle" className="t-inverse t-strong">model</text>
-      <rect x="342" y="42" width="78" height="44" rx="8" className="fill-surface-2" />
-      <text x="381" y="69" textAnchor="middle" className="t-strong">tools</text>
-      <line x1="300" y1="56" x2="338" y2="56" className="stroke-accent flow" strokeWidth="1.5" markerEnd={`url(#${a}-ar)`} />
-      <line x1="340" y1="74" x2="302" y2="74" className="stroke-ink-3 flow" strokeWidth="1.5" markerEnd={`url(#${a}-ar)`} />
-      <line x1="320" y1="78" x2="320" y2="100" className="stroke-accent" strokeDasharray="2 3" />
-      <Pill x={280} y={100} w={80} h={26} label="tool" tone="gate" />
-      <text x="220" y="148" className="t-mute">model picks · code checks</text>
-
-      {/* row B: output → answer */}
-      <line x1="318" y1="160" x2="318" y2="172" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
-      <Pill x={278} y={176} w={80} label="output" tone="gate" />
-      <line x1="278" y1="190" x2="162" y2="190" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
-      <Pill x={8} y={176} w={150} label="answer + citations" />
-
-      {/* writes: proposal → confirm → commit → db */}
-      <path d="M232 160 V224 H51 V238" className="fill-none stroke-ink-3" strokeDasharray="3 3" markerEnd={`url(#${a}-ar)`} />
-      <text x="224" y="218" textAnchor="end" className="t-mute t-small">a write becomes a proposal</text>
-      <Pill x={8} y={242} w={86} label="proposal" />
-      <line x1="94" y1="256" x2="110" y2="256" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
-      <Pill x={114} y={242} w={112} label="user confirms" />
-      <line x1="226" y1="256" x2="240" y2="256" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
-      <Pill x={244} y={242} w={84} label="commit" tone="gate" />
-      <line x1="328" y1="256" x2="342" y2="256" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
-      <Pill x={346} y={242} w={86} label="Postgres" tone="ink" />
-    </svg>
+export function TurnFigure() {
+  const legend: { kind: TurnStep["kind"]; label: string }[] = [
+    { kind: "model", label: "model" },
+    { kind: "gate", label: "deterministic code" },
+    { kind: "user", label: "user" },
+  ];
+  return (
+    <div>
+      <ul className="flex flex-wrap gap-x-4 gap-y-1 border-b border-line pb-3 font-mono text-[12px] text-ink-2">
+        {legend.map((l) => (
+          <li key={l.kind} className="flex items-center gap-1">
+            <StepNode kind={l.kind} />
+            {l.label}
+          </li>
+        ))}
+      </ul>
+      <div className="mt-4 grid gap-6 sm:grid-cols-2">
+        <div>
+          <p className="kicker mb-3">Answering</p>
+          <Rail steps={turnSteps} />
+        </div>
+        <div>
+          <p className="kicker mb-3">Saving changes</p>
+          <Rail steps={writeSteps} />
+          <p className="mt-6 border-l-2 border-warn pl-3 text-[13px] leading-snug text-ink-2">
+            If a gate fails, the step is retried. If it still cannot pass, the agent refuses — an
+            unverified answer never reaches the user.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 

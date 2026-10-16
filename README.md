@@ -24,7 +24,11 @@ Helper scripts (need the local Playwright Chromium cache; a server must be runni
 ```bash
 node scripts/screenshot.mjs   # desktop / dark / mobile screenshots → shots/
 node scripts/verify.mjs       # DOM checks: tokens, fonts, figures, dark mode, no horizontal scroll at 390px
+node scripts/make-favicon-icons.mjs  # render scripts/favicon.html → public/favicon.ico + apple-touch-icon.png
 ```
+
+The mark is an italic Newsreader "zȷ" on an ink tile with a cyan dot; the navbar draws the same
+mark in HTML. `zj.jpeg` is the earlier hand-lettered version, kept as source art.
 
 ## Structure
 
@@ -33,7 +37,7 @@ src/
   data/resume.ts            # all copy and figure data
   index.css                 # Flexoki tokens (light + dark) and shared figure styles
   components/
-    figures.tsx             # Fig. 1–5: stack / NutriEnv scoring + exam mix / NutriBuddy gates /
+    figures.tsx             # Fig. 1–5: stack / NutriEnv scoring + v1.1 results / one NutriBuddy turn /
                             #           NutriMind Pass@1 / Tencent retrieval
     Hero.tsx                # intro + Fig. 1
     Work.tsx                # three featured projects, each with a figure

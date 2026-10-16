@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { FeaturedProject } from "../data/resume";
-import { featured, workIntro } from "../data/resume";
-import { ExamMix, Figure, GateFigure, PassChart, ScoringFigure, TrainingStrip } from "./figures";
+import { benchResultsUrl, featured, workIntro } from "../data/resume";
+import { BenchResults, Figure, PassChart, ScoringFigure, TrainingStrip, TurnFigure } from "./figures";
 import { GitHubIcon } from "./icons";
 import { Reveal } from "./Reveal";
 import { Section, SectionHeading } from "./SectionHeading";
@@ -10,20 +10,30 @@ const figures: Record<FeaturedProject["id"], ReactNode> = {
   nutrienv: (
     <Figure
       n={2}
-      caption="Scoring in NutriEnv. Only the end state is compared with the oracle; any legal path that reaches it passes."
+      caption={
+        <>
+          Scoring and results. Only the end state is compared with the oracle. Below are the three runs
+          published in the{" "}
+          <a href={benchResultsUrl} target="_blank" rel="noreferrer" className="link-inline">
+            NutriEnv README
+          </a>
+          ; a single run per model does not establish a ranking. The gap opens on Recommend and Composite
+          tasks.
+        </>
+      }
     >
       <ScoringFigure />
       <div className="mt-6 border-t border-line pt-5">
-        <ExamMix />
+        <BenchResults />
       </div>
     </Figure>
   ),
   nutribuddy: (
     <Figure
       n={3}
-      caption="Four gates. Nothing the model produces reaches the user or the database without deterministic checks; writes also need the user's confirmation."
+      caption="One turn through NutriBuddy. Every model step is followed by a deterministic check, and saving anything also needs the user's confirmation."
     >
-      <GateFigure />
+      <TurnFigure />
     </Figure>
   ),
   nutrimind: (

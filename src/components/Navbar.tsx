@@ -34,14 +34,18 @@ export function Navbar() {
         <a
           href="#top"
           onClick={close}
-          className="flex min-h-[44px] items-center gap-2.5 text-base font-bold tracking-tight text-ink"
+          className="flex min-h-[44px] items-center gap-2.5 font-serif text-xl font-medium tracking-tight text-ink"
           aria-label="Back to top"
         >
+          {/* same mark as the favicon (scripts/favicon.html) */}
           <span
             aria-hidden="true"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-ink font-serif text-[13px] font-semibold text-paper"
+            className="relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-[22%] bg-ink"
           >
-            ZJ
+            <span className="-translate-x-[4%] -translate-y-[5%] font-serif text-[20px] leading-none font-semibold tracking-[-0.04em] text-paper italic">
+              z&#x0237;
+            </span>
+            <span className="absolute top-[19%] right-[25%] h-[13%] w-[13%] rounded-full bg-accent" />
           </span>
           {profile.name}
         </a>
