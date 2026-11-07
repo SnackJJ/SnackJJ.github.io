@@ -27,7 +27,7 @@ for (const id of ["#top", "#work", "#experience", "#background", "#contact"]) {
 }
 
 const figs = await page.evaluate(() => document.querySelectorAll("figure.fig").length);
-check("5 figures rendered", figs === 5, String(figs));
+check("6 figures rendered", figs === 6, String(figs));
 
 const svgs = await page.evaluate(() =>
   [...document.querySelectorAll("figure.fig svg")].every((s) => s.getBoundingClientRect().width > 200),

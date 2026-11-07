@@ -14,7 +14,7 @@ export const profile = {
     "Coming from pure mathematics, I work across the agent stack: runtimes where deterministic code owns facts and writes, frozen benchmarks scored by end state, and SFT + GRPO on a 2B model. In 2026 I spent six months at Tencent IEG putting retrieval agents to work in procurement.",
   question:
     "How much of an agent's capability comes from the model, and how much from the harness around it?",
-  availability: "Looking for a master's thesis or research internship",
+  availability: "Looking for full-time roles · open to a thesis or research internship",
   email: "zeqing.jiang@tum.de",
   location: "Munich, Germany",
   github: "https://github.com/SnackJJ",
@@ -38,7 +38,7 @@ export interface Stat {
 }
 
 export interface FeaturedProject {
-  id: "nutrienv" | "nutribuddy" | "nutrimind";
+  id: "nutrienv" | "nutribuddy" | "nutrimind" | "tutor";
   layer: string;
   title: string;
   period: string;
@@ -46,7 +46,7 @@ export interface FeaturedProject {
   points: string[];
   stats: Stat[];
   tags: string[];
-  github: string;
+  github?: string;
 }
 
 export const workIntro =
@@ -118,6 +118,28 @@ export const featured: FeaturedProject[] = [
     github: "https://github.com/SnackJJ/NutriMind",
   },
 ];
+
+/** Side project, outside the Nutri stack. Prototype; no public repo yet. */
+export const tutor: FeaturedProject = {
+  id: "tutor",
+  layer: "Side project · prototype",
+  title: "AI Tutor Agent",
+  period: "Oct 2026 — present",
+  blurb:
+    "An Obsidian plugin that turns my own notes into a two-minute daily recall drill, with a tutor agent that teaches before it tests — and a learner model that only rewrites itself when its predictions turn out wrong.",
+  points: [
+    "Review questions are generated deterministically from the note text and graded by code. The tutor agent reads notes and proposes; every note write or state change needs the user's click.",
+    "Mastery is a four-step ladder. Only correct, unaided answers on a later day reach the top step; in-session answers and self-ratings never do.",
+    "Self-evolution is gated by surprise: after a session the kernel compares predicted with actual performance, and only a large gap updates mastery, prerequisite edges or teaching depth. Most sessions change nothing, so memory stays bounded and every change traces back to logged observations.",
+    "Status: the plugin is in my daily use; the surprise gate runs in the offline prototype kernel and is being wired into the plugin. There is no learning-outcome data yet.",
+  ],
+  stats: [
+    { value: "4", label: "mastery levels" },
+    { value: "178", label: "kernel tests" },
+    { value: "45/45", label: "notes yield a question" },
+  ],
+  tags: ["TypeScript", "Obsidian API", "Agent harness", "Learner model"],
+};
 
 /**
  * NutriEnv v1.1 results as published in the NutriEnv README: internal ARK endpoint,
@@ -264,5 +286,5 @@ export const coursework: Coursework[] = [
 export const contact = {
   heading: "Say hello.",
   invite:
-    "I'm looking for a master's thesis or research internship around agent evaluation, tool use and post-training. Email is the fastest way to reach me.",
+    "I'm looking for full-time roles in agent engineering, evaluation and AI product, and I'm still open to a master's thesis or research internship. Email is the fastest way to reach me.",
 };

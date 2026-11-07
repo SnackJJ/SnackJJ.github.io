@@ -37,10 +37,10 @@ src/
   data/resume.ts            # all copy and figure data
   index.css                 # Flexoki tokens (light + dark) and shared figure styles
   components/
-    figures.tsx             # Fig. 1–5: stack / NutriEnv scoring + v1.1 results / one NutriBuddy turn /
-                            #           NutriMind Pass@1 / Tencent retrieval
+    figures.tsx             # Fig. 1–6: stack / NutriEnv scoring + v1.1 results / one NutriBuddy turn /
+                            #           NutriMind Pass@1 / AI tutor surprise gate / Tencent retrieval
     Hero.tsx                # intro + Fig. 1
-    Work.tsx                # three featured projects, each with a figure
+    Work.tsx                # three featured projects + the AI tutor side project, each with a figure
     Experience.tsx          # Tencent IEG + Fig. 5
     Background.tsx          # education, toolbox, coursework
     Contact.tsx, Footer.tsx, Navbar.tsx, SectionHeading.tsx, Reveal.tsx, icons.tsx

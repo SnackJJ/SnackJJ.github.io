@@ -51,7 +51,7 @@ export function Experience() {
 
         <Reveal delay={100} className="lg:sticky lg:top-24">
           <Figure
-            n={5}
+            n={6}
             caption="Supplier screening at Tencent IEG. Case studies outweigh self-reported claims in the fusion step; weak evidence sends the query back for reformulation instead of passing with a lower bar."
           >
             <RetrievalFigure />

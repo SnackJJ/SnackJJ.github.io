@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { FeaturedProject } from "../data/resume";
-import { benchResultsUrl, featured, workIntro } from "../data/resume";
-import { BenchResults, Figure, PassChart, ScoringFigure, TrainingStrip, TurnFigure } from "./figures";
+import { benchResultsUrl, featured, tutor, workIntro } from "../data/resume";
+import { BenchResults, Figure, PassChart, ScoringFigure, SurpriseGateFigure, TrainingStrip, TurnFigure } from "./figures";
 import { GitHubIcon } from "./icons";
 import { Reveal } from "./Reveal";
 import { Section, SectionHeading } from "./SectionHeading";
@@ -48,6 +48,14 @@ const figures: Record<FeaturedProject["id"], ReactNode> = {
       </div>
     </Figure>
   ),
+  tutor: (
+    <Figure
+      n={5}
+      caption="How the tutor's learner model updates itself. Sessions only log what happened; the model changes only when its prediction of the learner was clearly wrong."
+    >
+      <SurpriseGateFigure />
+    </Figure>
+  ),
 };
 
 function ProjectRow({ p, index }: { p: FeaturedProject; index: number }) {
@@ -61,18 +69,24 @@ function ProjectRow({ p, index }: { p: FeaturedProject; index: number }) {
           <span className="text-ink-3">{p.period}</span>
         </p>
         <h3 className="mt-3 flex items-center gap-3 font-serif text-4xl font-medium tracking-tight text-ink sm:text-[2.6rem]">
-          <a href={p.github} target="_blank" rel="noreferrer" className="hover:text-accent-deep">
-            {p.title}
-          </a>
-          <a
-            href={p.github}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`${p.title} on GitHub`}
-            className="text-xl text-ink-3 transition-colors hover:text-ink"
-          >
-            <GitHubIcon />
-          </a>
+          {p.github ? (
+            <>
+              <a href={p.github} target="_blank" rel="noreferrer" className="hover:text-accent-deep">
+                {p.title}
+              </a>
+              <a
+                href={p.github}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${p.title} on GitHub`}
+                className="text-xl text-ink-3 transition-colors hover:text-ink"
+              >
+                <GitHubIcon />
+              </a>
+            </>
+          ) : (
+            p.title
+          )}
         </h3>
         <p className="mt-4 text-lg leading-relaxed text-ink-2">{p.blurb}</p>
 
@@ -125,6 +139,10 @@ export function Work() {
         {featured.map((p, i) => (
           <ProjectRow key={p.id} p={p} index={i} />
         ))}
+      </div>
+      <p className="kicker mt-24 border-t border-line pt-6 sm:mt-32">Also building</p>
+      <div className="mt-10">
+        <ProjectRow p={tutor} index={featured.length} />
       </div>
     </Section>
   );

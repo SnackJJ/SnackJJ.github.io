@@ -494,7 +494,7 @@ export function TrainingStrip() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Fig. 4 — Tencent supplier-screening retrieval                       */
+/* Fig. 6 — Tencent supplier-screening retrieval                       */
 /* ------------------------------------------------------------------ */
 
 export function RetrievalFigure() {
@@ -547,6 +547,63 @@ export function RetrievalFigure() {
       <text x="24" y="166" className="t-small" style={{ fill: "var(--color-warn)" }}>HyDE /</text>
       <text x="24" y="182" className="t-small" style={{ fill: "var(--color-warn)" }}>rewrite</text>
       <text x="220" y="304" textAnchor="middle" className="t-mute">the admission threshold is never lowered</text>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Fig. 5 — AI tutor: surprise-gated learner model                     */
+/* ------------------------------------------------------------------ */
+
+export function SurpriseGateFigure() {
+  const a = useId().replace(/:/g, "");
+  const updates = [
+    { x: 6, name: "mastery", detail: "± one level" },
+    { x: 152, name: "prerequisites", detail: "missing edge" },
+    { x: 298, name: "teaching depth", detail: "scaffold level" },
+  ];
+  return (
+    <svg viewBox="0 0 440 318" role="img" aria-labelledby={`${a}-t`}>
+      <title id={`${a}-t`}>
+        Diagram: a study session only logs observations. Afterwards the kernel compares predicted with actual performance. If the surprise is small it changes nothing; if it exceeds the threshold it updates mastery, prerequisite edges or teaching depth.
+      </title>
+      <defs>
+        <ArrowDef id={`${a}-ar`} />
+        <ArrowDef id={`${a}-arA`} className="fill-accent" />
+      </defs>
+
+      <Pill x={140} y={8} w={160} label="study session" tone="ink" />
+      <text x="220" y="54" textAnchor="middle" className="t-mute">appends observations, edits nothing</text>
+      <line x1="220" y1="60" x2="220" y2="74" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
+
+      <rect x="90" y="78" width="260" height="30" rx="8" className="fill-surface-2" />
+      <text x="220" y="97" textAnchor="middle">predicted vs actual performance</text>
+      <line x1="220" y1="108" x2="220" y2="120" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
+
+      <path d="M220 124 L282 150 L220 176 L158 150 Z" className="fill-accent-soft stroke-accent" strokeWidth="1.4" />
+      <text x="220" y="154" textAnchor="middle" className="t-strong t-accent">surprise?</text>
+
+      {/* small → nothing */}
+      <line x1="158" y1="150" x2="134" y2="150" className="stroke-ink-3" markerEnd={`url(#${a}-ar)`} />
+      <text x="146" y="140" textAnchor="middle" className="t-small">small</text>
+      <rect x="6" y="134" width="124" height="32" rx="8" className="fill-paper stroke-line" />
+      <text x="68" y="154" textAnchor="middle" className="t-mute">change nothing</text>
+
+      {/* large → updates */}
+      <text x="228" y="192" className="t-small t-accent">large</text>
+      <path d="M220 176 V200" className="stroke-accent" strokeWidth="1.4" />
+      <path d="M70 200 H362" className="fill-none stroke-accent" strokeWidth="1.4" />
+      {updates.map((u) => (
+        <g key={u.name}>
+          <line x1={u.x + 68} y1="200" x2={u.x + 68} y2="210" className="stroke-accent" strokeWidth="1.4" markerEnd={`url(#${a}-arA)`} />
+          <rect x={u.x} y="214" width="136" height="50" rx="10" className="fill-paper stroke-accent" strokeWidth="1.3" />
+          <text x={u.x + 68} y="235" textAnchor="middle" className="t-strong">{u.name}</text>
+          <text x={u.x + 68} y="253" textAnchor="middle" className="t-mute">{u.detail}</text>
+        </g>
+      ))}
+
+      <text x="220" y="290" textAnchor="middle" className="t-mute">memory stays bounded; each change cites</text>
+      <text x="220" y="308" textAnchor="middle" className="t-mute">the observations that triggered it</text>
     </svg>
   );
 }
